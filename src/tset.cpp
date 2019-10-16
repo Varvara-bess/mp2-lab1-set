@@ -7,45 +7,51 @@
 
 #include "tset.h"
 
-TSet::TSet(int mp) : BitField(-1)
+TSet::TSet(int mp) : BitField(mp), MaxPower(mp)
 {
 }
 
 // конструктор копирования
-TSet::TSet(const TSet &s) : BitField(-1)
+TSet::TSet(const TSet &s) : BitField(s.BitField), MaxPower(s.MaxPower)
 {
 }
 
 // конструктор преобразования типа
-TSet::TSet(const TBitField &bf) : BitField(-1)
+TSet::TSet(const TBitField &bf) : BitField(bf), MaxPower(bf.GetLength)
 {
+
 }
 
 TSet::operator TBitField()
 {
+
 }
 
 int TSet::GetMaxPower(void) const // получить макс. к-во эл-тов
 {
+	return MaxPower;
 }
 
 int TSet::IsMember(const int Elem) const // элемент множества?
 {
-    return 0;
+    return BitField.GetBit(Elem);
 }
 
 void TSet::InsElem(const int Elem) // включение элемента множества
 {
+	BitField.SetBit(Elem);
 }
 
 void TSet::DelElem(const int Elem) // исключение элемента множества
 {
+	BitField.ClrBit(Elem);
 }
 
 // теоретико-множественные операции
 
 TSet& TSet::operator=(const TSet &s) // присваивание
 {
+
 }
 
 int TSet::operator==(const TSet &s) const // сравнение
@@ -59,10 +65,14 @@ int TSet::operator!=(const TSet &s) const // сравнение
 
 TSet TSet::operator+(const TSet &s) // объединение
 {
+	TBitField c = BitField | s.BitField;
+	TSet res(c);
+	return res;
 }
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
 {
+
 }
 
 TSet TSet::operator-(const int Elem) // разность с элементом
@@ -71,18 +81,36 @@ TSet TSet::operator-(const int Elem) // разность с элементом
 
 TSet TSet::operator*(const TSet &s) // пересечение
 {
+	TBitField c = BitField & s.BitField;
+	TSet res(c);
+	return res;
 }
 
 TSet TSet::operator~(void) // дополнение
 {
+	TSet res(~BitField);
+	return res;
 }
 
 // перегрузка ввода/вывода
 
-istream &operator>>(istream &istr, TSet &s) // ввод
+istream &operator>>(istream &is, TSet &s) // ввод
 {
+	int a;
+	is >> a;
+	while (a >= 0)
+	{
+		s.InsElem(a);
+		is >> a;
+	}
+	return is;
 }
 
-ostream& operator<<(ostream &ostr, const TSet &s) // вывод
+ostream& operator<<(ostream &os, const TSet &s) // вывод
 {
+	for (int i = 0; i < s.MaxPower; i++)
+	{
+		if (s.IsMember(i) != 0) cout << s.IsMember(i);
+	}
+	return os;
 }

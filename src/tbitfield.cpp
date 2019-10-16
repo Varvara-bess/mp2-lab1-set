@@ -42,7 +42,8 @@ int TBitField::GetMemIndex(const int n) const // индекс Мем для би
 TELEM TBitField::GetMemMask(const int bit) const // битовая маска для бита n
 {
 	int p = bit % 32;
-	  return 1 << p;
+	return 1 << p;
+
 }
 
 // доступ к битам битового поля
@@ -71,7 +72,7 @@ void TBitField::ClrBit(const int b) // очистить бит
 	  pMem[pos] &= mask;
 }
 
-int TBitField::GetBit(const int n) const // получить значение бита
+int TBitField::GetBit(const int b) const // получить значение бита
 {
 	  int pos = GetMemIndex(b);
 	  TELEM mask = GetMemMask(b);

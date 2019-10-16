@@ -4,14 +4,14 @@
 
 TEST(TBitField, can_create_bitfield_with_positive_length)
 {
-  ASSERT_NO_THROW(TBitField bf(3));
+  ASSERT_NO_THROW(TBitField bf(3));//ждем что исключений не будет 
 }
 
 TEST(TBitField, can_get_length)
 {
   TBitField bf(3);
 
-  EXPECT_EQ(3, bf.GetLength());
+  EXPECT_EQ(3, bf.GetLength());//первый аргумент = второму
 }
 
 TEST(TBitField, new_bitfield_is_set_to_zero)
@@ -24,17 +24,17 @@ TEST(TBitField, new_bitfield_is_set_to_zero)
     sum += bf.GetBit(i);
   }
 
-  EXPECT_EQ(0, sum);
+  EXPECT_EQ(0, sum); // ожидаем что 0 равен сумме
 }
 
 TEST(TBitField, can_set_bit)
 {
   TBitField bf(10);
 
-  EXPECT_EQ(0, bf.GetBit(3));
+  EXPECT_EQ(0, bf.GetBit(3)); //бит 3 равен нулю
 
   bf.SetBit(3);
-  EXPECT_NE(0, bf.GetBit(3));
+  EXPECT_NE(0, bf.GetBit(3)); // не равен нулю
 }
 
 TEST(TBitField, can_clear_bit)
@@ -52,7 +52,7 @@ TEST(TBitField, can_clear_bit)
 
 TEST(TBitField, throws_when_create_bitfield_with_negative_length)
 {
-  ASSERT_ANY_THROW(TBitField bf(-3));
+  ASSERT_ANY_THROW(TBitField bf(-3));//будет выбрасывание исключения
 }
 
 TEST(TBitField, throws_when_set_bit_with_negative_index)
