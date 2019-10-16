@@ -22,98 +22,31 @@ private:
   int  MemLen; // к-во эл-тов Мем для представления бит.поля
 
   // методы реализации
-  int   GetMemIndex(const int n) const
-  {
-	  return n / 32;
-  }
-  ; // индекс в pМем для бита n       (#О2)
-  TELEM GetMemMask(const int bit) const
-  {
-	  int p = bit % 32;
-	  return 1 << p;
-  }
-  ; // битовая маска для бита n       (#О3)
+  int   GetMemIndex(const int n) const; // индекс в pМем для бита n       (#О2)
+  TELEM GetMemMask(const int bit) const; // битовая маска для бита n       (#О3)
 public:
-	TBitField(int _BitLen = 1)
-	{
-		BitLen = _BitLen;
-		MemLen = (BitLen / 32) + 1;
-		pMem = new TELEM[MemLen];
-		for (int i = 0; i < MemLen; i++)
-		{
-			pMem[i] = 0;
-		}
-	}
-	               //                                   (#О1)
-	TBitField(const TBitField &b)
-	{
-		BitLen = b.BitLen;
-		MemLen = b.MemLen;
-		pMem = new TELEM[MemLen];
-		for (int i = 0; i < MemLen; i++)
-		{
-			pMem[i] = b.pMem[i];
-		}
-	}   //                                   (#П1)
-  ~TBitField()
-  {
-	  delete[]pMem;
-  }
-	  ;                      //                                    (#С)
+	TBitField(int _BitLen = 1);	               //                                   (#О1)
+	TBitField(const TBitField &b);  //                                   (#П1)
+  ~TBitField();                      //                                    (#С)
 
   // доступ к битам
-  int GetLength(void) const
-  {
-
-  };      // получить длину (к-во битов)           (#О)
-  void SetBit(const int b)// установить бит                       (#О4)
-  {
-	  int pos;
-	  pos = GetMemIndex(b);
-	  TELEM mask;
-	  mask = GetMemMask(b);
-	  pMem[pos] |= mask;
-
-  }       
-  void ClrBit(const int b)// очистить бит                         (#П2)
-  {
-	  int pos;
-	  pos = GetMemIndex(b);
-	  TELEM mask;
-	  mask = GetMemMask(b);
-	  mask = ~mask;
-	  pMem[pos] &= mask;
-  }
-		
-      
-  int  GetBit(const int b) const // получить значение бита               (#Л1
-  {
-	  int pos = GetMemIndex(b);
-	  TELEM mask = GetMemMask(b);
-	  int res;
-	  res = pMem[pos] & mask;
-	  return res;
-  }
- 
+  int GetLength(void) const;      // получить длину (к-во битов)           (#О)
+  void SetBit(const int b);// установить бит                       (#О4)
+        
+  void ClrBit(const int b);// очистить бит                         (#П2)     
+  int  GetBit(const int b) const; // получить значение бита               (#Л1
+  
 
   // битовые операции
   int operator==(const TBitField &bf) const; // сравнение                 (#О5)
-  int operator!=(const TBitField &bf) const; // сравнение
+  
+  bool operator!=(const TBitField &bf) const; // сравнение
+  
   TBitField& operator=(const TBitField &bf); // присваивание              (#П3)
-  TBitField  operator|(const TBitField &b)// операция "или"            (#О6)
-  {
-	  TBitField res(BitLen);
-	  for (int i = 0; i < MemLen; i++)
-	  {
-		  res.pMem[i] = pMem[i] | b.pMem[i];
-		  return res;
-	  }
-  }
-  TBitField  operator&(const TBitField &bf)
-  {
-
-  }
-  // операция "и"              (#Л2)
+ 
+  TBitField  operator|(const TBitField &bf);// операция "или"            (#О6)
+  
+  TBitField  operator&(const TBitField &bf); // операция "и"              (#Л2)
   TBitField  operator~(void);                // отрицание                  (#С)
 
   friend istream &operator>>(istream &istr, TBitField &bf);       //      (#О7)
